@@ -132,15 +132,17 @@ function kmlData(_label, _url) {
 }
 
 var kmlDataArray=[];
-kmlDataArray[0]=new kmlData("避難所",'data/kml/hinanjo.kml');
-kmlDataArray[1]=new kmlData("避難場所",'data/kml/hinanbasyo.kml');
+//kmlDataArray[0]=new kmlData("避難所",'data/kml/hinanjo.kml');
+//kmlDataArray[1]=new kmlData("避難場所",'data/kml/hinanbasyo.kml');
+
+kmlDataArray[0]=new kmlData("小笠原ツアー",'data/kml/ogasawara.kml');
 
 //オーバレイ配列を用意
 
 var overlayDataArray=[];
 var openStreetMap = [];
 
-//ビューア初期化	
+//ビューア初期化
 
 var viewer = new Cesium.Viewer('cesiumContainer',{
 	imageryProvider : new Cesium.ArcGisMapServerImageryProvider({
@@ -202,7 +204,7 @@ function landing(){
 
 //KMLロード関数
 
-function loadKml(){			
+function loadKml(){
 	var i = 0;
 	var load = setInterval(function(){
 		var promise = Cesium.KmlDataSource.load(kmlDataArray[i].url);
@@ -259,7 +261,7 @@ function transParent (layer){
 	var overlay = overlayDataArray[layer].overlayObj;
 	var slider = document.getElementById(id);
 	if (slider.value == 0){
-		overlay.show = false;	
+		overlay.show = false;
 	} else{
 		overlay.show = true;
 		overlay.alpha = slider.value * 0.03;
@@ -274,11 +276,11 @@ function changeViewPoint(num, delay) {
 	var newHeading = Cesium.Math.toRadians(viewPointsArray[num].heading);
 	var newPitch = Cesium.Math.toRadians(viewPointsArray[num].pitch);
 	var newRange = viewPointsArray[num].range;
-	
+
 	var center = Cesium.Cartesian3.fromDegrees(newLng, newLat);
 	var boundingSphere = new Cesium.BoundingSphere(center, newRange);
 	var headingPitchRange = new Cesium.HeadingPitchRange(newHeading, newPitch, newRange);
-	
+
 	viewer.camera.constrainedAxis = Cesium.Cartesian3.UNIT_Z;
 	viewer.camera.flyToBoundingSphere(boundingSphere,{
 		duration : delay,
@@ -304,7 +306,7 @@ function geocode() {
 				var south = southNorth[Object.keys(southNorth)[0]];
 				var north = southNorth[Object.keys(southNorth)[1]];
 				var west = westEast[Object.keys(westEast)[0]];
-				var east = westEast[Object.keys(westEast)[1]];		
+				var east = westEast[Object.keys(westEast)[1]];
 				var rectangle = Cesium.Rectangle.fromDegrees(west, south, east, north);
 				viewer.camera.flyTo({
 					destination : rectangle,
@@ -313,7 +315,7 @@ function geocode() {
 			} else {
 				alert('見つかりません');
 			}
-		} 
+		}
 		);
 }
 
@@ -330,7 +332,7 @@ function setClickEvent(){
 			var latlng = new google.maps.LatLng(Cesium.Math.toDegrees(cart.latitude), Cesium.Math.toDegrees(cart.longitude));
 
 			var sv = new google.maps.StreetViewService();
-			sv.getPanoramaByLocation(latlng, 50, 
+			sv.getPanoramaByLocation(latlng, 50,
 				function (data, status) {
 					//ストリートビュー未対応エリアの場合
 					if (status != google.maps.StreetViewStatus.OK) {
@@ -394,7 +396,7 @@ function fadeInOut(layer,param) {
 		$(function() {
 			$(layer).fadeIn("slow");
 		});
-	} 
+	}
 }
 
 </script>
